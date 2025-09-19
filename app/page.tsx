@@ -257,7 +257,7 @@ export default function BirthdayPage() {
                 </div>
                 <Card className="p-10 glass-card-enhanced border-2 border-white/30 card-hover">
                   <h2 className="text-4xl font-bold text-enhanced mb-6 font-[family-name:var(--font-poppins)] text-balance">
-                    Rayakan Moment Bahagia
+                    Rayakan Moment
                   </h2>
                   <p className="text-enhanced-light leading-relaxed text-lg">
                     Setiap tahun yang berlalu adalah pencapaian luar biasa. Kamu telah tumbuh, belajar, dan menjadi
@@ -300,12 +300,11 @@ export default function BirthdayPage() {
                 </div>
                 <Card className="p-10 glass-card-enhanced border-2 border-white/30 card-hover">
                   <h2 className="text-4xl font-bold text-enhanced mb-6 font-[family-name:var(--font-poppins)] text-balance">
-                    Cerita Kita
+                    Story of You
                   </h2>
                   <p className="text-enhanced-light leading-relaxed text-lg">
-                    Tulis ceritamu di sini... Kenangan indah yang telah kita lalui bersama, tawa yang kita bagikan, dan
-                    momen-momen berharga yang akan selalu terukir di hati. Terima kasih telah menjadi bagian penting
-                    dalam hidup ini.
+                    Hari ini menjadi lembaran baru dalam perjalanan hidupmu, Dinda. Seperti buku yang terus ditulis, setiap ulang tahun adalah bab yang menandai pertumbuhan, pengalaman, dan harapan baru. Di balik setiap senyumanmu, 
+                    tersimpan cerita perjuangan yang membuatmu semakin kuat dan dewasa.
                   </p>
                 </Card>
               </div>
@@ -313,12 +312,10 @@ export default function BirthdayPage() {
               {/* Section 4 */}
               <div className="fade-in grid lg:grid-cols-2 gap-16 items-center">
                 <Card className="p-10 glass-card-enhanced border-2 border-white/30 lg:order-1 card-hover">
-                  <h2 className="text-4xl font-bold text-enhanced mb-6 font-[family-name:var(--font-poppins)] text-balance">
-                    Masa Depan Cerah
-                  </h2>
                   <p className="text-enhanced-light leading-relaxed text-lg">
-                    Tulis harapanmu di sini... Semoga di tahun yang baru ini, kamu akan menemukan petualangan baru,
-                    mencapai mimpi-mimpi yang belum terwujud, dan terus menjadi inspirasi bagi orang-orang di sekitarmu.
+                    Semoga di bab baru ini, kamu menemukan lebih banyak kebahagiaan, 
+                    kesempatan, dan alasan untuk bersyukur. 
+                    Jadikan setiap langkahmu berarti, karena kisahmu selalu berharga untuk dikenang dan diteruskan dengan penuh semangat. Selamat ulang tahun, Dinda. 🌸✨
                   </p>
                 </Card>
                 <div className="lg:order-2 relative group">
@@ -337,37 +334,32 @@ export default function BirthdayPage() {
             <div className="relative group">
               <div className="absolute -inset-4 bg-gradient-to-r from-blue-200 to-emerald-200 rounded-3xl blur-xl opacity-40 group-hover:opacity-70 transition-opacity duration-500"></div>
               <img
-                src="/dinda/14.jpg"
+                src="/dinda/5.jpg"
                 alt="Persahabatan dan perayaan"
                 className="relative rounded-3xl shadow-2xl w-full h-96 object-cover transition-transform duration-500 group-hover:scale-105"
               />
             </div>
             <Card className="p-10 glass-card-enhanced border-2 border-white/30 card-hover">
-              <h2 className="text-4xl font-bold text-enhanced mb-6 font-[family-name:var(--font-poppins)] text-balance">
-                Cerita Kita
-              </h2>
+              
               <p className="text-enhanced-light leading-relaxed text-lg">
-                Tulis ceritamu di sini... Kenangan indah yang telah kita lalui bersama, tawa yang kita bagikan, dan
-                momen-momen berharga yang akan selalu terukir di hati. Terima kasih telah menjadi bagian penting
-                dalam hidup ini.
+                Setiap tahun yang datang bukan hanya angka, tapi juga cermin dari perjalanan panjang yang sudah kamu lewati. Semua tawa, air mata, dan doa-doa yang pernah terucap adalah bagian dari indahnya perjalananmu. Di usia yang baru ini, semoga Tuhan senantiasa 
+                melindungimu dan memberikan kekuatan dalam setiap tantangan.
               </p>
             </Card>
           </div>
 
           <div className="fade-in grid lg:grid-cols-2 gap-16 items-center">
             <Card className="p-10 glass-card-enhanced border-2 border-white/30 lg:order-1 card-hover">
-              <h2 className="text-4xl font-bold text-enhanced mb-6 font-[family-name:var(--font-poppins)] text-balance">
-                Masa Depan Cerah
-              </h2>
               <p className="text-enhanced-light leading-relaxed text-lg">
-                Tulis harapanmu di sini... Semoga di tahun yang baru ini, kamu akan menemukan petualangan baru,
-                mencapai mimpi-mimpi yang belum terwujud, dan terus menjadi inspirasi bagi orang-orang di sekitarmu.
+                Dan ingatlah, Dinda, bahwa dunia ini lebih indah dengan kehadiranmu. Jangan pernah berhenti bermimpi, karena setiap impian yang kamu simpan adalah cahaya yang akan menuntun langkahmu ke masa depan. 
+                Teruslah bersinar, sebab kebahagiaanmu juga menjadi 
+                kebahagiaan bagi orang-orang yang mencintaimu. 🌟💐
               </p>
             </Card>
             <div className="lg:order-2 relative group">
               <div className="absolute -inset-4 bg-gradient-to-r from-emerald-200 to-amber-200 rounded-3xl blur-xl opacity-40 group-hover:opacity-70 transition-opacity duration-500"></div>
               <img
-                src="/dinda/15.jpg"
+                src="/dinda/13.jpg"
                 alt="Masa depan cerah"
                 className="relative rounded-3xl shadow-2xl w-full h-96 object-cover transition-transform duration-500 group-hover:scale-105"
               />
