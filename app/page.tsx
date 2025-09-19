@@ -135,6 +135,43 @@ export default function BirthdayPage() {
     }).catch((e) => console.error('Failed to delete wish', e))
   }
 
+  // Photos carousel
+  const [photos, setPhotos] = useState<string[]>([])
+
+  useEffect(() => {
+    fetch('/api/photos')
+      .then((r) => r.json())
+      .then((list) => setPhotos(list))
+      .catch((e) => console.error('Failed to load photos', e))
+  }, [])
+
+  function HorizontalCarousel({ images }: { images: string[] }) {
+    const [idx, setIdx] = useState(0)
+    useEffect(() => {
+      const id = setInterval(() => setIdx((i) => (i + 1) % images.length), 4000)
+      return () => clearInterval(id)
+    }, [images.length])
+    if (images.length === 0) return null
+    return (
+      <div className="w-full max-w-4xl mx-auto relative">
+        <div className="overflow-hidden rounded-2xl h-96 sm:h-[480px] md:h-[560px] lg:h-[640px] bg-black">
+          <div style={{ transform: `translateX(-${idx * 100}%)` }} className="flex transition-transform duration-700">
+            {images.map((src, i) => (
+              <div key={i} className="flex-shrink-0 w-full h-96 sm:h-[480px] md:h-[560px] lg:h-[640px] flex items-center justify-center">
+                <img src={src} alt={`photo-${i}`} className="max-h-full object-contain rounded-2xl" />
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="absolute left-1/2 transform -translate-x-1/2 bottom-3 flex gap-2">
+          {images.map((_, i) => (
+            <button key={i} onClick={() => setIdx(i)} className={`w-2 h-2 rounded-full ${i===idx? 'bg-white':'bg-white/40'}`}></button>
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen">
       <div className="fixed inset-0 gradient-bg-1 animated-gradient -z-10"></div>
@@ -145,7 +182,7 @@ export default function BirthdayPage() {
       preload="auto"
       onError={(e) => console.error("Audio error:", e)}
       >
-      {/* <source src="/dinda/soundDinda.mp3" type="audio/mpeg"/> */}
+      <source src="/dinda/soundDinda.mp3" type="audio/mpeg"/>
       </audio>
 
       {showSplash && (
@@ -367,9 +404,15 @@ export default function BirthdayPage() {
           </div>
           </div>
           </section>
-
+          {/* caraousel foto landscape */}
           <section className="py-16 px-4 bg-gradient-to-b from-neutral-900/70 to-neutral-900/50 text-white">
-            <div className="max-w-6xl mx-auto">
+             <div className="max-w-6xl mx-auto">
+              <h3 className="text-3xl font-bold text-white mb-4">Foto-foto</h3>
+
+              <div className="mb-6">
+                <HorizontalCarousel images={photos} />
+              </div>
+
               <h3 className="text-3xl font-bold text-white mb-4">Ucapanmu Apa, coba sampaikan</h3>
 
               <form onSubmit={addWish} className="flex gap-2 mb-6">
@@ -407,6 +450,15 @@ export default function BirthdayPage() {
                             <p className="text-sm text-white">{w.text}</p>
                             <div className="flex flex-col items-end">
                               <span className="text-[10px] text-white/60 mt-1">{new Date(w.createdAt).toLocaleString()}</span>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  deleteWish(w.id)
+                                }}
+                                className="text-xs text-red-400 mt-1"
+                              >
+                                Hapus
+                              </button>
                             </div>
                           </div>
                         </Card>
