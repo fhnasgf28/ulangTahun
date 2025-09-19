@@ -76,7 +76,16 @@ export default function BirthdayPage() {
     fetch('/api/wishes')
       .then((r) => r.json())
       .then((data) => {
-        if (mounted) setWishes(data)
+        if (!mounted) return
+        if (Array.isArray(data)) {
+          setWishes(data)
+        } else if (data && typeof data === 'object' && 'error' in data) {
+          console.error('Failed to load wishes, API error:', data)
+          setWishes([])
+        } else {
+          console.warn('Unexpected wishes response shape, expected array:', data)
+          setWishes([])
+        }
       })
       .catch((e) => console.error('Failed to load wishes from server', e))
     return () => {
@@ -96,8 +105,15 @@ export default function BirthdayPage() {
     })
       .then((r) => r.json())
       .then((item) => {
-        setWishes((p) => [item, ...p])
-        setNewWish("")
+        if (item && typeof item === 'object' && 'id' in item) {
+          setWishes((p) => {
+            const base = Array.isArray(p) ? p : []
+            return [item, ...base]
+          })
+          setNewWish("")
+        } else {
+          console.error('POST /api/wishes returned unexpected response:', item)
+        }
       })
       .catch((e) => console.error('Failed to post wish', e))
   }
