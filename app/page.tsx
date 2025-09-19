@@ -450,15 +450,6 @@ export default function BirthdayPage() {
                             <p className="text-sm text-white">{w.text}</p>
                             <div className="flex flex-col items-end">
                               <span className="text-[10px] text-white/60 mt-1">{new Date(w.createdAt).toLocaleString()}</span>
-                              <button
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  deleteWish(w.id)
-                                }}
-                                className="text-xs text-red-400 mt-1"
-                              >
-                                Hapus
-                              </button>
                             </div>
                           </div>
                         </Card>
