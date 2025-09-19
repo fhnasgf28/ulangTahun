@@ -65,6 +65,54 @@ export default function BirthdayPage() {
     }
   }
 
+  // Wishes kanban state & handlers
+  type Wish = { id: string; text: string; status: "todo" | "doing" | "done"; createdAt: number }
+  const [wishes, setWishes] = useState<Wish[]>(() => {
+    try {
+      if (typeof window === "undefined") return []
+      const raw = localStorage.getItem("wishes")
+      return raw ? JSON.parse(raw) : []
+    } catch (e) {
+      console.error("Failed to read wishes from localStorage:", e)
+      return []
+    }
+  })
+  const [newWish, setNewWish] = useState("")
+
+  // persist wishes whenever they change
+  useEffect(() => {
+    try {
+      localStorage.setItem("wishes", JSON.stringify(wishes))
+    } catch (e) {
+      console.error("Failed to save wishes:", e)
+    }
+  }, [wishes])
+
+  const addWish = (e: React.FormEvent) => {
+    e.preventDefault()
+    const txt = newWish.trim()
+    if (!txt) return
+    const item: Wish = { id: Date.now().toString(), text: txt, status: "todo", createdAt: Date.now() }
+    setWishes((p) => [item, ...p])
+    setNewWish("")
+  }
+
+  const onDragStart = (e: React.DragEvent, id: string) => {
+    e.dataTransfer.setData("text/plain", id)
+  }
+
+  const onDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+  }
+
+  const onDropTo = (e: React.DragEvent, status: Wish["status"]) => {
+    e.preventDefault()
+    const id = e.dataTransfer.getData("text/plain")
+    if (!id) return
+    setWishes((p) => p.map((w) => (w.id === id ? { ...w, status } : w)))
+  }
+
+  const removeWish = (id: string) => setWishes((p) => p.filter((w) => w.id !== id))
   
 
   return (
@@ -308,6 +356,55 @@ export default function BirthdayPage() {
           </div>
           </section>
 
+          <section className="py-16 px-4 bg-gradient-to-b from-neutral-900/70 to-neutral-900/50 text-white">
+            <div className="max-w-6xl mx-auto">
+              <h3 className="text-3xl font-bold text-white mb-4">Ucapanmu Apa, coba sampaikan</h3>
+
+              <form onSubmit={addWish} className="flex gap-2 mb-6">
+                <input
+                  value={newWish}
+                  onChange={(e) => setNewWish(e.target.value)}
+                  placeholder="Tulis ucapanmu di sini..."
+                  className="flex-1 px-4 py-3 rounded-lg bg-white/10 text-white placeholder:text-white/60 border border-white/10"
+                />
+                <Button type="submit">Kirim</Button>
+              </form>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {([
+                  ["todo", "Baru"],
+                  ["doing", "Dibaca"],
+                  ["done", "Favorit"],
+                ] as Array<[Wish["status"], string]>).map(([status, title]) => (
+                  <div
+                    key={status}
+                    onDragOver={onDragOver}
+                    onDrop={(e) => onDropTo(e, status)}
+                    className="min-h-[160px] p-3 bg-black/40 rounded-lg"
+                  >
+                    <h4 className="font-semibold mb-2 text-white">{title}</h4>
+                    <div className="space-y-3">
+                      {wishes.filter((w) => w.status === status).map((w) => (
+                        <Card
+                          key={w.id}
+                          draggable
+                          onDragStart={(e) => onDragStart(e, w.id)}
+                          className="p-3 bg-black/30 text-white"
+                        >
+                          <div className="flex justify-between items-start gap-2">
+                            <p className="text-sm text-white">{w.text}</p>
+                            <div className="flex flex-col items-end">
+                              <span className="text-[10px] text-white/60 mt-1">{new Date(w.createdAt).toLocaleString()}</span>
+                            </div>
+                          </div>
+                        </Card>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
           <section className="py-32 relative overflow-hidden">
             <div className="absolute inset-0 gradient-overlay-3"></div>
 
