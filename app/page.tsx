@@ -67,34 +67,39 @@ export default function BirthdayPage() {
 
   // Wishes kanban state & handlers
   type Wish = { id: string; text: string; status: "todo" | "doing" | "done"; createdAt: number }
-  const [wishes, setWishes] = useState<Wish[]>(() => {
-    try {
-      if (typeof window === "undefined") return []
-      const raw = localStorage.getItem("wishes")
-      return raw ? JSON.parse(raw) : []
-    } catch (e) {
-      console.error("Failed to read wishes from localStorage:", e)
-      return []
-    }
-  })
+  const [wishes, setWishes] = useState<Wish[]>([])
   const [newWish, setNewWish] = useState("")
 
-  // persist wishes whenever they change
+  // load wishes from server
   useEffect(() => {
-    try {
-      localStorage.setItem("wishes", JSON.stringify(wishes))
-    } catch (e) {
-      console.error("Failed to save wishes:", e)
+    let mounted = true
+    fetch('/api/wishes')
+      .then((r) => r.json())
+      .then((data) => {
+        if (mounted) setWishes(data)
+      })
+      .catch((e) => console.error('Failed to load wishes from server', e))
+    return () => {
+      mounted = false
     }
-  }, [wishes])
+  }, [])
 
   const addWish = (e: React.FormEvent) => {
     e.preventDefault()
     const txt = newWish.trim()
     if (!txt) return
-    const item: Wish = { id: Date.now().toString(), text: txt, status: "todo", createdAt: Date.now() }
-    setWishes((p) => [item, ...p])
-    setNewWish("")
+    // post to server
+    fetch('/api/wishes', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: txt }),
+    })
+      .then((r) => r.json())
+      .then((item) => {
+        setWishes((p) => [item, ...p])
+        setNewWish("")
+      })
+      .catch((e) => console.error('Failed to post wish', e))
   }
 
   const onDragStart = (e: React.DragEvent, id: string) => {
@@ -110,10 +115,25 @@ export default function BirthdayPage() {
     const id = e.dataTransfer.getData("text/plain")
     if (!id) return
     setWishes((p) => p.map((w) => (w.id === id ? { ...w, status } : w)))
+    // persist
+    fetch('/api/wishes', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, status }),
+    }).catch((e) => console.error('Failed to update wish status', e))
   }
 
   const removeWish = (id: string) => setWishes((p) => p.filter((w) => w.id !== id))
   
+  // delete on server
+  const deleteWish = (id: string) => {
+    setWishes((p) => p.filter((w) => w.id !== id))
+    fetch('/api/wishes', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    }).catch((e) => console.error('Failed to delete wish', e))
+  }
 
   return (
     <div className="min-h-screen">
